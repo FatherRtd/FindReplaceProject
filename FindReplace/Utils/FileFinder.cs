@@ -7,22 +7,9 @@ namespace FindReplace.Utils
 {
 	class FileFinder
 	{
-
-		public static List<string> FindFiles(string path)
-		{
-			try
-			{
-				List<string> files = new List<string>();
-				files = Directory.EnumerateFiles(path).ToList();
-				return files;
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
-		}
 		public static List<string> FindFiles(string path, string mask, System.IO.SearchOption searchOption)
 		{
+			mask = String.IsNullOrWhiteSpace(mask) ? "*.*" : mask;
 			try
 			{
 				List<string> files = new List<string>();
@@ -36,6 +23,7 @@ namespace FindReplace.Utils
 		}
 		public static List<string> FindFiles(string path, string mask, string excludeMask, System.IO.SearchOption searchOption)
 		{
+			mask = String.IsNullOrWhiteSpace(mask) ? "*.*" : mask;
 			try
 			{
 				List<string> files = new List<string>();

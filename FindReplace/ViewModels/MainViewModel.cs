@@ -5,6 +5,7 @@ using FindReplace.Models;
 using FindReplace.Utils;
 using GalaSoft.MvvmLight.Command;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -16,8 +17,6 @@ namespace FindReplace.ViewModels
 {
 	class MainViewModel : INotifyPropertyChanged
 	{
-		private CancellationTokenSource cancellationSource;
-
 		private string _dir;
 		private string _mask;
 		private string _excludeMask;
@@ -26,8 +25,8 @@ namespace FindReplace.ViewModels
 		private int _numberOfItems;
 		private int _itemsInProcess;
 		private bool _isIncludeSubDir;
-
 		private bool _isInterfaceBlocked;
+		private CancellationTokenSource cancellationSource;
 
 		public string Dir
 		{
@@ -157,23 +156,12 @@ namespace FindReplace.ViewModels
 			ItemsInProcess = 0;
 
 			List<string> files = new List<string>();
-			if (String.IsNullOrWhiteSpace(ExcludeMask) && String.IsNullOrWhiteSpace(Mask))
+			
+			if (!String.IsNullOrWhiteSpace(ExcludeMask))
 			{
 				try
 				{
-					files = FileFinder.FindFiles(Dir);
-				}
-				catch (Exception e)
-				{
-					App.Current.Dispatcher.Invoke(() => DebugStringCollection.Add($"Error: {e.Message}"));
-					return;
-				}
-			}
-			else if (String.IsNullOrWhiteSpace(ExcludeMask))
-			{
-				try
-				{
-					files = FileFinder.FindFiles(Dir, Mask,
+					files = FileFinder.FindFiles(Dir, Mask,ExcludeMask,
 						IsIncludeSubDir ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
 				}
 				catch (Exception e)
@@ -186,7 +174,7 @@ namespace FindReplace.ViewModels
 			{
 				try
 				{
-					files = FileFinder.FindFiles(Dir, Mask, ExcludeMask,
+					files = FileFinder.FindFiles(Dir, Mask,
 						IsIncludeSubDir ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly);
 				}
 				catch (Exception e)

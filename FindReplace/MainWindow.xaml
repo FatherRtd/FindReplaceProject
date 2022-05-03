@@ -94,7 +94,8 @@
                     <ProgressBar Minimum="0" Maximum="{Binding NumberOfItems}" Value="{Binding ItemsInProcess}" Width="550" Height="30"/>
                     <Button Content="Cancel" Command="{Binding CancelFindCommand}" Style="{StaticResource ButtonStyle}"/>
                 </DockPanel>
-                <ListBox Grid.Row="2" ItemsSource="{Binding DebugStringCollection}"  Background="#37DB79" Margin="20 0 20 20"/>
+                <ListBox Grid.Row="2" ItemsSource="{Binding DebugStringCollection}" SelectedIndex="{Binding LastItemIndex}"  Background="#37DB79" Margin="20 0 20 20">
+                </ListBox>
             </Grid>
         </Grid>
     </StackPanel>
